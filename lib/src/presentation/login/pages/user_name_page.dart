@@ -9,11 +9,56 @@ import '../../../core/common.dart';
 import '../../../core/enum/box_types.dart';
 import '../../../service_locator.dart';
 
-class UserNamePage extends StatelessWidget {
-  UserNamePage({Key? key}) : super(key: key);
+enum Education {
+  primary,
+  secondary,
+  higherSecondary,
+  graduate,
+  postGraduate;
 
+  String get name {
+    switch (this) {
+      case Education.primary:
+        return 'Primary';
+      case Education.secondary:
+        return 'Secondary';
+      case Education.higherSecondary:
+        return 'Higher Secondary';
+      case Education.graduate:
+        return 'Graduate';
+      case Education.postGraduate:
+        return 'Post Graduate';
+    }
+  }
+}
+
+class UserNamePage extends StatefulWidget {
+  const UserNamePage({Key? key}) : super(key: key);
+
+  @override
+  State<UserNamePage> createState() => _UserNamePageState();
+}
+
+class _UserNamePageState extends State<UserNamePage> {
   final _nameController = TextEditingController();
+  final _ageController = TextEditingController();
+  final _capGainController = TextEditingController();
+  final _capLossController = TextEditingController();
+  final _incomeController = TextEditingController();
   final _formState = GlobalKey<FormState>();
+  bool _matrialStatus = false;
+  Education _education = Education.graduate;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _ageController.dispose();
+    _capGainController.dispose();
+    _capLossController.dispose();
+    _incomeController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<Box>(
@@ -83,21 +128,94 @@ class UserNamePage extends StatelessWidget {
                     const SizedBox(height: 16),
                     Form(
                       key: _formState,
-                      child: TextFormField(
-                        key: const Key('user_name_textfield'),
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                          hintText: context.loc.enterNameLabel,
-                          label: Text(context.loc.nameLabel),
-                        ),
-                        keyboardType: TextInputType.name,
-                        validator: (val) {
-                          if (val!.isNotEmpty) {
-                            return null;
-                          } else {
-                            return context.loc.enterNameLabel;
-                          }
-                        },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          TextFormField(
+                            controller: _nameController,
+                            decoration: InputDecoration(
+                              hintText: context.loc.enterNameLabel,
+                              label: Text(context.loc.nameLabel),
+                            ),
+                            keyboardType: TextInputType.name,
+                            validator: (val) {
+                              if (val!.isNotEmpty) {
+                                return null;
+                              } else {
+                                return context.loc.enterNameLabel;
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          const Text("Matrial Status"),
+                          _matrialStatusWidget(),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: _ageController,
+                            decoration: const InputDecoration(
+                              hintText: "Enter your age",
+                              label: Text("Age"),
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (val) {
+                              if (val!.isNotEmpty) {
+                                return null;
+                              } else {
+                                return "Enter your age";
+                              }
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          _educationWidget(),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: _capGainController,
+                            decoration: const InputDecoration(
+                              hintText: "Enter Capital Gains",
+                              suffixText: "₹",
+                              label: Text("Capital Gains"),
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (val) {
+                              if (val!.isNotEmpty) {
+                                return null;
+                              }
+                              return "Enter capital gains";
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: _capLossController,
+                            decoration: const InputDecoration(
+                              hintText: "Enter Capital Loss",
+                              suffixText: "₹",
+                              label: Text("Capital Loss"),
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (val) {
+                              if (val!.isNotEmpty) {
+                                return null;
+                              }
+                              return "Enter Capital Loss";
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: _incomeController,
+                            decoration: const InputDecoration(
+                              hintText: "Enter Income per year",
+                              suffixText: "₹",
+                              label: Text("Income per year"),
+                            ),
+                            keyboardType: TextInputType.number,
+                            validator: (val) {
+                              if (val!.isNotEmpty) {
+                                return null;
+                              }
+                              return "Enter Income per year";
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -125,6 +243,76 @@ class UserNamePage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  InputDecorator _educationWidget() {
+    return InputDecorator(
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 8,
+        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<Education>(
+          value: _education,
+          hint: const Text("Education"),
+          items: Education.values
+              .map(
+                (e) => DropdownMenuItem<Education>(
+                  value: e,
+                  child: Text(e.name),
+                ),
+              )
+              .toList(),
+          onChanged: (val) {
+            if (val == null) return;
+            setState(() {
+              _education = val;
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _matrialStatusWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Radio<bool>(
+              value: true,
+              groupValue: _matrialStatus,
+              onChanged: (val) {
+                if (val == null) return;
+                setState(() {
+                  _matrialStatus = val;
+                });
+              },
+            ),
+            Text("Married", style: Theme.of(context).textTheme.titleLarge),
+          ],
+        ),
+        Row(
+          children: [
+            Radio<bool>(
+              value: false,
+              groupValue: _matrialStatus,
+              onChanged: (val) {
+                if (val == null) return;
+                setState(() {
+                  _matrialStatus = val;
+                });
+              },
+            ),
+            Text("Unmarried", style: Theme.of(context).textTheme.titleLarge),
+          ],
+        ),
+      ],
     );
   }
 }
