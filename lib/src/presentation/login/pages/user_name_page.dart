@@ -47,6 +47,7 @@ class _UserNamePageState extends State<UserNamePage> {
   final _incomeController = TextEditingController();
   final _formState = GlobalKey<FormState>();
   bool _matrialStatus = false;
+  bool _gender = true;
   Education _education = Education.graduate;
 
   @override
@@ -150,6 +151,9 @@ class _UserNamePageState extends State<UserNamePage> {
                           const Text("Matrial Status"),
                           _matrialStatusWidget(),
                           const SizedBox(height: 16),
+                          const Text("Gender"),
+                          _genderWidget(),
+                          const SizedBox(height: 16),
                           TextFormField(
                             controller: _ageController,
                             decoration: const InputDecoration(
@@ -158,11 +162,11 @@ class _UserNamePageState extends State<UserNamePage> {
                             ),
                             keyboardType: TextInputType.number,
                             validator: (val) {
-                              if (val!.isNotEmpty) {
-                                return null;
-                              } else {
+                              if (val == null || val.isEmpty) {
                                 return "Enter your age";
                               }
+
+                              return null;
                             },
                           ),
                           const SizedBox(height: 16),
@@ -226,9 +230,16 @@ class _UserNamePageState extends State<UserNamePage> {
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
               if (_formState.currentState!.validate()) {
-                value
-                    .put(userNameKey, _nameController.text)
-                    .then((value) => context.go(userImagePath));
+                value.putAll({
+                  userNameKey: _nameController.text,
+                  userAgeKey: int.parse(_ageController.text),
+                  userMatrialStatusKey: _matrialStatus,
+                  userEducationKey: _education,
+                  userCapitalGainKey: int.parse(_capGainController.text),
+                  userCapitalLossKey: int.parse(_capLossController.text),
+                  userIncomeKey: int.parse(_incomeController.text),
+                  userGenderKey: _gender,
+                }).then((value) => context.go(userImagePath));
               }
             },
             extendedPadding: const EdgeInsets.symmetric(horizontal: 24),
@@ -310,6 +321,44 @@ class _UserNamePageState extends State<UserNamePage> {
               },
             ),
             Text("Unmarried", style: Theme.of(context).textTheme.titleLarge),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _genderWidget() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Radio<bool>(
+              value: false,
+              groupValue: _gender,
+              onChanged: (val) {
+                if (val == null) return;
+                setState(() {
+                  _gender = val;
+                });
+              },
+            ),
+            Text("Male", style: Theme.of(context).textTheme.titleLarge),
+          ],
+        ),
+        Row(
+          children: [
+            Radio<bool>(
+              value: true,
+              groupValue: _gender,
+              onChanged: (val) {
+                if (val == null) return;
+                setState(() {
+                  _gender = val;
+                });
+              },
+            ),
+            Text("Female", style: Theme.of(context).textTheme.titleLarge),
           ],
         ),
       ],
