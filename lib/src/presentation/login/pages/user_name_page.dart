@@ -234,7 +234,7 @@ class _UserNamePageState extends State<UserNamePage> {
                   userNameKey: _nameController.text,
                   userAgeKey: int.parse(_ageController.text),
                   userMatrialStatusKey: _matrialStatus,
-                  userEducationKey: _education,
+                  userEducationKey: _education.index,
                   userCapitalGainKey: int.parse(_capGainController.text),
                   userCapitalLossKey: int.parse(_capLossController.text),
                   userIncomeKey: int.parse(_incomeController.text),

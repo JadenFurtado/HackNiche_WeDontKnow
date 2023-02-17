@@ -1,6 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import '../../../data/suggestion/models/suggestion_model.dart';
+
 const PIE_RADIUS = 140.0;
 
 enum SuggestionType {
@@ -25,23 +27,94 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
+        SliverToBoxAdapter(child: _pieChartWidget()),
         SliverToBoxAdapter(
-          child: _pieChartWidget(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 32.0),
+                child: Text(
+                  "Term Life Insurance",
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              SizedBox(
+                height: 170,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 5,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 8,
+                  ),
+                  itemBuilder: (context, index) => _suggestionWidget(
+                    const SuggestionModel(
+                      name: "name",
+                      company: "company",
+                      logo: "https://darshanrander.com/darshan.jpg",
+                      site: "site",
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
-        // SliverList(
-        //   delegate: SliverChildListDelegate.fixed(
-        //     SuggestionType.values
-        //         .map((e) => e != SuggestionType.expenses
-        //             ? ListTile(
-        //                 title: Text("Show ${e.name} investment options"),
-        //                 onTap: () {},
-        //                 trailing: const Icon(Icons.chevron_right_rounded),
-        //               )
-        //             : const SizedBox.shrink())
-        //         .toList(),
-        //   ),
-        // ),
+        const SliverToBoxAdapter(child: SizedBox(height: 8)),
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 32.0),
+                child: Text(
+                  "Health Insurance",
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+              SizedBox(
+                height: 170,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 5,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 8,
+                  ),
+                  itemBuilder: (context, index) => _suggestionWidget(
+                    const SuggestionModel(
+                      name: "name",
+                      company: "company",
+                      logo: "https://darshanrander.com/darshan.jpg",
+                      site: "site",
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
+    );
+  }
+
+  Widget _suggestionWidget(SuggestionModel suggestion) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Image.network(
+              suggestion.logo,
+              height: 120,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(suggestion.name),
+        ],
+      ),
     );
   }
 
