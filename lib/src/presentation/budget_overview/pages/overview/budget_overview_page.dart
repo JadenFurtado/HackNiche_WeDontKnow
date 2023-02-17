@@ -56,15 +56,6 @@ class _BudgetOverViewPageState extends State<BudgetOverViewPage> {
                 builder: (filteredBudger) {
                   return CustomScrollView(
                     slivers: [
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: ElevatedButton(
-                            onPressed: () {},
-                            child: const Text("Get Budgeting suggestions"),
-                          ),
-                        ),
-                      ),
                       SliverPadding(
                         padding: const EdgeInsets.only(bottom: 128),
                         sliver: SliverList(

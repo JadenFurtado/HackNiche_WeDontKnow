@@ -37,7 +37,8 @@ extension TotalAmountOnExpenses on Iterable<Expense> {
       where((element) => element.time.isAfterBeforeTime(range)).toList();
 
   double get filterTotal => fold<double>(0, (previousValue, element) {
-        if (element.type == TransactionType.expense) {
+        if ({TransactionType.expense, TransactionType.investment}
+            .contains(element.type)) {
           return previousValue - element.currency;
         } else {
           return previousValue + element.currency;

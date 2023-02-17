@@ -110,10 +110,10 @@ class HomeMobilePage extends StatelessWidget {
                   icon: const Icon(Icons.category_outlined),
                   selectedIcon: const Icon(Icons.category),
                 ),
-                NavigationDestination(
-                  label: context.loc.budgetLabel,
-                  icon: const Icon(Icons.account_balance_wallet_outlined),
-                  selectedIcon: const Icon(Icons.account_balance_wallet),
+                const NavigationDestination(
+                  label: "B&I",
+                  icon: Icon(Icons.account_balance_wallet_outlined),
+                  selectedIcon: Icon(Icons.account_balance_wallet),
                 ),
                 const NavigationDestination(
                   label: "Suggestions",

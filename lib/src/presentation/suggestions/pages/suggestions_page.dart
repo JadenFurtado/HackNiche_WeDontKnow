@@ -28,19 +28,19 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
         SliverToBoxAdapter(
           child: _pieChartWidget(),
         ),
-        SliverList(
-          delegate: SliverChildListDelegate.fixed(
-            SuggestionType.values
-                .map((e) => e != SuggestionType.expenses
-                    ? ListTile(
-                        title: Text("Show ${e.name} investment options"),
-                        onTap: () {},
-                        trailing: const Icon(Icons.chevron_right_rounded),
-                      )
-                    : const SizedBox.shrink())
-                .toList(),
-          ),
-        ),
+        // SliverList(
+        //   delegate: SliverChildListDelegate.fixed(
+        //     SuggestionType.values
+        //         .map((e) => e != SuggestionType.expenses
+        //             ? ListTile(
+        //                 title: Text("Show ${e.name} investment options"),
+        //                 onTap: () {},
+        //                 trailing: const Icon(Icons.chevron_right_rounded),
+        //               )
+        //             : const SizedBox.shrink())
+        //         .toList(),
+        //   ),
+        // ),
       ],
     );
   }
