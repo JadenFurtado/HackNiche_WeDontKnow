@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Care Supreme",
+        "company": "Care Health Insurance",
+        "logo": "https://www.careinsurance.com/cpproject/rhiclfrontend/assets/public/images/care_health_insurance_logo.svg",
+        "site": "https://www.careinsurance.com/"
+    },
+    {
+        "name": "Max Saver",
+        "company": "Ni",
+        "logo": "https://www.nivabupa.com/content/dam/nivabupa/Image/logos/NivaLogo324x180.png",
+        "site": "https://www.nivabupa.com/"
+    },
+    {
+        "name": "Star Comprehensive",
+        "company": "Star",
+        "logo": "https://www.sbilife.co.in/sites/SBILife/images/SBI_Logo.png",
+        "site": "https://www.starhealth.in/"
+    },
+    {
+        "name": "Activ Fit Plus",
+        "company": "Aditiya Birla",
+        "logo": "https://seeklogo.com/images/A/aditya-birla-capital-logo-D65E6BF098-seeklogo.com.png",
+        "site": "https://lifeinsurance.adityabirlacapital.com/"
+    },
+    {
+        "name": "Individual Health Guard - Gold",
+        "company": "Bajaj",
+        "logo": "https://cms-assets.bajajfinserv.in/is/image/bajajfinance/bfl-logo-v6?scl=1&fmt=png-alpha",
+        "site": "https://www.bajajfinserv.in/insurance/bajaj-allianz-health-guard-insurance-plan"
+    }
+]

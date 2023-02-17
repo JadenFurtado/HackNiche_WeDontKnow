@@ -1,0 +1,50 @@
+[
+    {
+        "name": "Aditya Birla Sun Life Insurance",
+        "company": "Aditya Birla",
+        "logo": "https://seeklogo.com/images/A/aditya-birla-capital-logo-D65E6BF098-seeklogo.com.png",
+        "site": "https://lifeinsurance.adityabirlacapital.com/"
+    },
+    {
+        "name": "HDFC Life Click 2 Protect Plus",
+        "company": "HDFC",
+        "logo": "https://www.hdfclife.com/content/dam/hdfclifeinsurancecompany/HDFC_logo.svg",
+        "site": "https://www.hdfclife.com/term-insurance-plans/click-2-protect-life"
+    },
+    {
+        "name": "SBI Life eShield",
+        "company": "SBI",
+        "logo": "https://www.sbilife.co.in/sites/SBILife/images/SBI_Logo.png",
+        "site": "https://www.sbilife.co.in/en/online-insurance-plans/eshield-next"
+    },
+    {
+        "name": "Birla Sun Life BSLI Protect",
+        "company": "Birla Sun Life",
+        "logo": "https://seeklogo.com/images/A/aditya-birla-capital-logo-D65E6BF098-seeklogo.com.png",
+        "site": "https://lifeinsurance.adityabirlacapital.com/"
+    },
+    {
+        "name": "Max Life Online Term Plan Plus Basic Life Cover",
+        "company": "Max Life",
+        "logo": "https://www.maxlifeinsurance.com/static-page/assets/homepage/maxlogo.svg",
+        "site": "https://www.maxlifeinsurance.com/"
+    },
+    {
+        "name": "LIC's Jeevan Pragati Plan",
+        "company": "LIC",
+        "logo": "http://test.licindia.in/CorporateSiteDemo/media/LIC_Media/NewLogo.png",
+        "site": "http://test.licindia.in/Products/Withdrawn-Plans/LIC-s-Jeevan-Pragati"
+    },
+    {
+        "name": "PNB MetLife Mera Term Plan",
+        "company": "PNB",
+        "logo": "https://online.pnbmetlife.com/meratermplanplus/assets/images/logo.jpg",
+        "site": "https://online.pnbmetlife.com/meratermplanplus/home"
+    },
+    {
+        "name": "Bharti Axa Life Elite Secure",
+        "company": "Bharti Axa",
+        "logo": "https://www.bhartiaxa.com/sites/default/files/2022-08/bharti-axa-logo.svg?w=256&q=75",
+        "site": "https://www.bhartiaxa.com/savings-plans/elite-advantage"
+    }
+]

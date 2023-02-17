@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../data/suggestion/models/suggestion_model.dart';
 
@@ -23,6 +27,20 @@ class SuggestionsPage extends StatefulWidget {
 }
 
 class _SuggestionsPageState extends State<SuggestionsPage> {
+  Future<List<SuggestionModel>> _getSuggestions(String path) async {
+    final str = jsonDecode(await rootBundle.loadString(path)) as List;
+    return str.map((e) => SuggestionModel.fromMap(e)).toList();
+  }
+
+  late final Future<List<SuggestionModel>> _lifeSuggestions, _healthSuggestions;
+
+  @override
+  void initState() {
+    super.initState();
+    _lifeSuggestions = _getSuggestions("assets/data/life_ins.json");
+    _healthSuggestions = _getSuggestions("assets/data/health_ins.json");
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -41,21 +59,23 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
               ),
               SizedBox(
                 height: 170,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 8,
-                  ),
-                  itemBuilder: (context, index) => _suggestionWidget(
-                    const SuggestionModel(
-                      name: "name",
-                      company: "company",
-                      logo: "https://darshanrander.com/darshan.jpg",
-                      site: "site",
-                    ),
-                  ),
+                child: FutureBuilder<List<SuggestionModel>>(
+                  future: _lifeSuggestions,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 8,
+                        ),
+                        itemBuilder: (context, index) =>
+                            _suggestionWidget(snapshot.data![index]),
+                      );
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
                 ),
               ),
             ],
@@ -75,21 +95,23 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
               ),
               SizedBox(
                 height: 170,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 5,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 8,
-                  ),
-                  itemBuilder: (context, index) => _suggestionWidget(
-                    const SuggestionModel(
-                      name: "name",
-                      company: "company",
-                      logo: "https://darshanrander.com/darshan.jpg",
-                      site: "site",
-                    ),
-                  ),
+                child: FutureBuilder<List<SuggestionModel>>(
+                  future: _healthSuggestions,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 8,
+                        ),
+                        itemBuilder: (context, index) =>
+                            _suggestionWidget(snapshot.data![index]),
+                      );
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
                 ),
               ),
             ],
@@ -102,18 +124,29 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
   Widget _suggestionWidget(SuggestionModel suggestion) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Column(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Image.network(
-              suggestion.logo,
-              height: 120,
+      child: SizedBox(
+        width: 140,
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () => launchUrlString(suggestion.site),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Image.network(
+                  suggestion.logo,
+                  height: 120,
+                ),
+              ),
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(suggestion.name),
-        ],
+            const SizedBox(height: 4),
+            Text(
+              suggestion.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+        ),
       ),
     );
   }
