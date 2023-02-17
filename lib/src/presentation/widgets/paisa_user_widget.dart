@@ -7,7 +7,6 @@ import 'package:paisa/src/service_locator.dart';
 
 import '../../app/routes.dart';
 import '../../core/common.dart';
-import '../../core/enum/page_type.dart';
 import '../home/bloc/home_bloc.dart';
 import '../home/widgets/welcome_widget.dart';
 import 'choose_theme_mode_widget.dart';
