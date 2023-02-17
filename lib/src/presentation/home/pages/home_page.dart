@@ -42,6 +42,9 @@ class _LandingPageState extends State<LandingPage> {
       case PageType.budgetOverview:
         _dateRangePicker();
         break;
+      case PageType.suggestions:
+        // TODO: Handle this case.
+        break;
     }
   }
 
@@ -65,7 +68,8 @@ class _LandingPageState extends State<LandingPage> {
     return BlocBuilder(
       bloc: homeBloc,
       builder: (context, state) {
-        if (state is CurrentIndexState) {
+        if (state is CurrentIndexState &&
+            state.currentPage != PageType.suggestions) {
           return FloatingActionButton.large(
             onPressed: () => _handleClick(state.currentPage),
             child: state.currentPage != PageType.budgetOverview

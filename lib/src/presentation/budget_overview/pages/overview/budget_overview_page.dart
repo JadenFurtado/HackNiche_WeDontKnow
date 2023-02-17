@@ -53,17 +53,34 @@ class _BudgetOverViewPageState extends State<BudgetOverViewPage> {
               builder: (List<Expense> expenses) => FilterBudgetWidget(
                 valueNotifier: valueNotifier,
                 expenses: expenses,
-                builder: (filteredBudger) => ListView.builder(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(bottom: 128),
-                  itemCount: filteredBudger.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      BudgetSection(
-                    dataSource: dataSource,
-                    name: filteredBudger[index].key,
-                    values: filteredBudger[index].value,
-                  ),
-                ),
+                builder: (filteredBudger) {
+                  return CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            child: const Text("Get Budgeting suggestions"),
+                          ),
+                        ),
+                      ),
+                      SliverPadding(
+                        padding: const EdgeInsets.only(bottom: 128),
+                        sliver: SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) => BudgetSection(
+                              dataSource: dataSource,
+                              name: filteredBudger[index].key,
+                              values: filteredBudger[index].value,
+                            ),
+                            childCount: filteredBudger.length,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
             );
             return ScreenTypeLayout(

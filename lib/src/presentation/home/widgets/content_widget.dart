@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:paisa/src/presentation/suggestions/pages/suggestions_page.dart';
 
 import '../../../core/common.dart';
 import '../../../service_locator.dart';
@@ -28,6 +29,7 @@ class ContentWidget extends StatelessWidget {
       dateTimeRangeNotifier: dateTimeRangeNotifier,
     ),
     PageType.debts: const DebtsPage(),
+    PageType.suggestions: const SuggestionsPage(),
   };
 
   @override

@@ -115,6 +115,11 @@ class HomeMobilePage extends StatelessWidget {
                   icon: const Icon(Icons.account_balance_wallet_outlined),
                   selectedIcon: const Icon(Icons.account_balance_wallet),
                 ),
+                const NavigationDestination(
+                  label: "Suggestions",
+                  icon: Icon(Icons.lightbulb_outline),
+                  selectedIcon: Icon(Icons.lightbulb),
+                ),
               ],
             ),
           ),

@@ -7,6 +7,7 @@ enum PageType {
   accounts,
   category,
   budgetOverview,
+  suggestions,
   debts;
 
   int get toIndex {
@@ -19,8 +20,10 @@ enum PageType {
         return 2;
       case PageType.budgetOverview:
         return 3;
-      case PageType.debts:
+      case PageType.suggestions:
         return 4;
+      case PageType.debts:
+        return 5;
     }
   }
 
@@ -34,6 +37,8 @@ enum PageType {
         return context.loc.budgetOverViewLabel;
       case PageType.category:
         return context.loc.categoryLabel;
+      case PageType.suggestions:
+        return "Suggestions";
       case PageType.debts:
         return context.loc.debtsLabel;
     }
