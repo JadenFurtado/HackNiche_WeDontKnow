@@ -5,6 +5,13 @@ import '../../../app/routes.dart';
 import '../../../data/category/model/category.dart';
 import '../../widgets/paisa_card.dart';
 
+const IGNORE_DELETE = [
+  "FU money",
+  "Safe investment",
+  "Risky investment",
+  "Default"
+];
+
 class CategoryItemMobileWidget extends StatelessWidget {
   const CategoryItemMobileWidget({
     Key? key,
@@ -53,13 +60,15 @@ class CategoryItemMobileWidget extends StatelessWidget {
                           .withOpacity(0.75),
                     ),
               ),
-        trailing: IconButton(
-          onPressed: onPressed,
-          icon: Icon(
-            Icons.delete_rounded,
-            color: Theme.of(context).colorScheme.error,
-          ),
-        ),
+        trailing: !IGNORE_DELETE.contains(category.name)
+            ? IconButton(
+                onPressed: onPressed,
+                icon: Icon(
+                  Icons.delete_rounded,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              )
+            : null,
       ),
     );
   }

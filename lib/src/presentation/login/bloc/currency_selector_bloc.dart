@@ -63,6 +63,39 @@ class CurrencySelectorBloc extends Bloc<SplashEvent, SplashState> {
       final int id = await categories.add(category);
       category.superId = id;
       category.save();
+
+      final fuMoney = Category(
+        name: 'FU money',
+        icon: MdiIcons.lock.codePoint,
+        description: 'FU money',
+        color:
+            Colors.primaries[Random().nextInt(Colors.primaries.length)].value,
+      );
+      final int fuMoneyId = await categories.add(fuMoney);
+      fuMoney.superId = fuMoneyId;
+      fuMoney.save();
+
+      final safeInvestment = Category(
+        name: 'Safe investment',
+        icon: MdiIcons.safe.codePoint,
+        description: 'Safe investment',
+        color:
+            Colors.primaries[Random().nextInt(Colors.primaries.length)].value,
+      );
+      final int safeInvestmentId = await categories.add(safeInvestment);
+      safeInvestment.superId = safeInvestmentId;
+      safeInvestment.save();
+
+      final riskyInvestment = Category(
+        name: 'Risky investment',
+        icon: MdiIcons.alarm.codePoint,
+        description: 'Risky investment',
+        color:
+            Colors.primaries[Random().nextInt(Colors.primaries.length)].value,
+      );
+      final int riskyInvestmentId = await categories.add(riskyInvestment);
+      riskyInvestment.superId = riskyInvestmentId;
+      riskyInvestment.save();
     }
 
     final languageCode = settings.get(userLanguageKey, defaultValue: 'DEF');
