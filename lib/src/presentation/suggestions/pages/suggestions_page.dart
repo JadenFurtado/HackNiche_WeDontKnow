@@ -1,9 +1,15 @@
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
+import 'package:paisa/src/core/common.dart';
+import 'package:paisa/src/core/enum/box_types.dart';
+import 'package:paisa/src/service_locator.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../data/suggestion/models/suggestion_model.dart';
 
@@ -32,13 +38,29 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
     return str.map((e) => SuggestionModel.fromMap(e)).toList();
   }
 
+  Future<Map<String, dynamic>> _getBudgetingSuggestions() async {
+    final settingsBox =
+        locator.get<Box<dynamic>>(instanceName: BoxType.settings.name);
+
+    final age = settingsBox.get(userAgeKey);
+    final sex = settingsBox.get(userGenderKey) ? 0 : 1;
+    final income = settingsBox.get(userIncomeKey);
+    final res = await http.get(Uri.parse(
+      "$baseURL/diversifySuggestions?age=$age&sex=$sex&income=$income",
+    ));
+
+    return jsonDecode(res.body) as Map<String, dynamic>;
+  }
+
   late final Future<List<SuggestionModel>> _lifeSuggestions, _healthSuggestions;
+  late final Future<Map<String, dynamic>> _budgetingSuggestions;
 
   @override
   void initState() {
     super.initState();
     _lifeSuggestions = _getSuggestions("assets/data/life_ins.json");
     _healthSuggestions = _getSuggestions("assets/data/health_ins.json");
+    _budgetingSuggestions = _getBudgetingSuggestions();
   }
 
   @override
@@ -152,41 +174,65 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
   }
 
   Widget _pieChartWidget() {
-    return AspectRatio(
-      aspectRatio: 1,
-      child: PieChart(
-        PieChartData(
-          borderData: FlBorderData(show: false),
-          sectionsSpace: 0,
-          centerSpaceRadius: 0,
-          sections: [
-            PieChartSectionData(
-              color: Colors.amber,
-              value: 40,
-              title: 'FU Money\n₹10000',
-              radius: PIE_RADIUS,
+    String snakeCasetoSentenceCase(String str) {
+      return "${str[0].toUpperCase()}${str.substring(1)}"
+          .replaceAll(RegExp(r'(_|-)+'), ' ');
+    }
+
+    const colors = [
+      Color(0xffFF000A),
+      Color(0xff8AFF00),
+      Color(0xff00FFF5),
+      Color(0xff7500FF),
+      Color(0xff003FFF),
+      Color(0xFFDEF00F),
+      Color(0xff81807E)
+    ];
+
+    bool useWhiteForeground(Color backgroundColor, {double bias = 0.0}) {
+      int v = math
+          .sqrt(math.pow(backgroundColor.red, 2) * 0.299 +
+              math.pow(backgroundColor.green, 2) * 0.587 +
+              math.pow(backgroundColor.blue, 2) * 0.114)
+          .round();
+      return v < 130 + bias ? true : false;
+    }
+
+    return FutureBuilder<Map<String, dynamic>>(
+      future: _budgetingSuggestions,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return AspectRatio(
+            aspectRatio: 1,
+            child: PieChart(
+              PieChartData(
+                borderData: FlBorderData(show: false),
+                sectionsSpace: 0,
+                centerSpaceRadius: 0,
+                sections: snapshot.data!.entries.map(
+                  (e) {
+                    final color =
+                        colors[snapshot.data!.keys.toList().indexOf(e.key)];
+                    return PieChartSectionData(
+                      color: color,
+                      value: e.value,
+                      title: snakeCasetoSentenceCase(e.key),
+                      radius: PIE_RADIUS,
+                      titleStyle:
+                          Theme.of(context).textTheme.bodySmall!.copyWith(
+                                color: useWhiteForeground(color)
+                                    ? Colors.white
+                                    : Colors.black,
+                              ),
+                    );
+                  },
+                ).toList(),
+              ),
             ),
-            PieChartSectionData(
-              color: Colors.red,
-              value: 40,
-              title: 'Expenses\n₹10000',
-              radius: PIE_RADIUS,
-            ),
-            PieChartSectionData(
-              color: Colors.blue,
-              value: 40,
-              title: 'Risky\n₹10000',
-              radius: PIE_RADIUS,
-            ),
-            PieChartSectionData(
-              color: Colors.green,
-              value: 40,
-              title: 'Safe\n₹10000',
-              radius: PIE_RADIUS,
-            ),
-          ],
-        ),
-      ),
+          );
+        }
+        return const Center(child: CircularProgressIndicator());
+      },
     );
   }
 }
