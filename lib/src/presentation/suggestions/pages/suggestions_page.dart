@@ -15,6 +15,16 @@ import '../../../data/suggestion/models/suggestion_model.dart';
 
 const PIE_RADIUS = 140.0;
 
+const pieChartColors = [
+  Color(0xffFF000A),
+  Color(0xff8AFF00),
+  Color(0xff00FFF5),
+  Color(0xff7500FF),
+  Color(0xff003FFF),
+  Color(0xFFDEF00F),
+  Color(0xff81807E)
+];
+
 enum SuggestionType {
   safe("Safe"),
   risky("Risky"),
@@ -68,6 +78,7 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(child: _pieChartWidget()),
+        const SliverToBoxAdapter(child: Divider()),
         SliverToBoxAdapter(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +114,7 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
             ],
           ),
         ),
-        const SliverToBoxAdapter(child: SizedBox(height: 8)),
+        const SliverToBoxAdapter(child: Divider()),
         SliverToBoxAdapter(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,16 +190,6 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
           .replaceAll(RegExp(r'(_|-)+'), ' ');
     }
 
-    const colors = [
-      Color(0xffFF000A),
-      Color(0xff8AFF00),
-      Color(0xff00FFF5),
-      Color(0xff7500FF),
-      Color(0xff003FFF),
-      Color(0xFFDEF00F),
-      Color(0xff81807E)
-    ];
-
     bool useWhiteForeground(Color backgroundColor, {double bias = 0.0}) {
       int v = math
           .sqrt(math.pow(backgroundColor.red, 2) * 0.299 +
@@ -202,33 +203,74 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
       future: _budgetingSuggestions,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return AspectRatio(
-            aspectRatio: 1,
-            child: PieChart(
-              PieChartData(
-                borderData: FlBorderData(show: false),
-                sectionsSpace: 0,
-                centerSpaceRadius: 0,
-                sections: snapshot.data!.entries.map(
-                  (e) {
-                    final color =
-                        colors[snapshot.data!.keys.toList().indexOf(e.key)];
-                    return PieChartSectionData(
-                      color: color,
-                      value: e.value,
-                      title: snakeCasetoSentenceCase(e.key),
-                      radius: PIE_RADIUS,
-                      titleStyle:
-                          Theme.of(context).textTheme.bodySmall!.copyWith(
-                                color: useWhiteForeground(color)
-                                    ? Colors.white
-                                    : Colors.black,
-                              ),
-                    );
-                  },
-                ).toList(),
+          return Column(
+            children: [
+              AspectRatio(
+                aspectRatio: 1,
+                child: PieChart(
+                  PieChartData(
+                    borderData: FlBorderData(show: false),
+                    sectionsSpace: 0,
+                    centerSpaceRadius: 0,
+                    sections: snapshot.data!.entries.map(
+                      (e) {
+                        final color = pieChartColors[
+                            snapshot.data!.keys.toList().indexOf(e.key)];
+                        return PieChartSectionData(
+                          color: color,
+                          value: e.value,
+                          title: "${((e.value as double) * 100.0).round()}%",
+                          radius: PIE_RADIUS,
+                          titlePositionPercentageOffset: 0.7,
+                          titleStyle: Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(
+                                  color: useWhiteForeground(color)
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontWeight: FontWeight.bold),
+                        );
+                      },
+                    ).toList(),
+                  ),
+                ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0)
+                    .copyWith(bottom: 25),
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  children: snapshot.data!.entries.map(
+                    (e) {
+                      final color = pieChartColors[
+                          snapshot.data!.keys.toList().indexOf(e.key)];
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 16,
+                              height: 16,
+                              decoration: BoxDecoration(
+                                color: color,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              snakeCasetoSentenceCase(e.key),
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ).toList(),
+                ),
+              )
+            ],
           );
         }
         return const Center(child: CircularProgressIndicator());
