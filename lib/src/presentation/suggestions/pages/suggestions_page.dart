@@ -11,7 +11,7 @@ import 'package:paisa/src/service_locator.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../data/suggestion/models/suggestion_model.dart';
+import '../../../data/suggestion/models/insurance_suggestion_model.dart';
 
 const PIE_RADIUS = 140.0;
 
@@ -43,9 +43,9 @@ class SuggestionsPage extends StatefulWidget {
 }
 
 class _SuggestionsPageState extends State<SuggestionsPage> {
-  Future<List<SuggestionModel>> _getSuggestions(String path) async {
+  Future<List<InsuranceSuggestionModel>> _getSuggestions(String path) async {
     final str = jsonDecode(await rootBundle.loadString(path)) as List;
-    return str.map((e) => SuggestionModel.fromMap(e)).toList();
+    return str.map((e) => InsuranceSuggestionModel.fromMap(e)).toList();
   }
 
   Future<Map<String, dynamic>> _getBudgetingSuggestions() async {
@@ -62,7 +62,8 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
     return jsonDecode(res.body) as Map<String, dynamic>;
   }
 
-  late final Future<List<SuggestionModel>> _lifeSuggestions, _healthSuggestions;
+  late final Future<List<InsuranceSuggestionModel>> _lifeSuggestions,
+      _healthSuggestions;
   late final Future<Map<String, dynamic>> _budgetingSuggestions;
 
   @override
@@ -92,7 +93,7 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
               ),
               SizedBox(
                 height: 170,
-                child: FutureBuilder<List<SuggestionModel>>(
+                child: FutureBuilder<List<InsuranceSuggestionModel>>(
                   future: _lifeSuggestions,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
@@ -128,7 +129,7 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
               ),
               SizedBox(
                 height: 170,
-                child: FutureBuilder<List<SuggestionModel>>(
+                child: FutureBuilder<List<InsuranceSuggestionModel>>(
                   future: _healthSuggestions,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
@@ -154,7 +155,7 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
     );
   }
 
-  Widget _suggestionWidget(SuggestionModel suggestion) {
+  Widget _suggestionWidget(InsuranceSuggestionModel suggestion) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: SizedBox(

@@ -1,25 +1,25 @@
 import 'dart:convert';
 
-class SuggestionModel {
+class InsuranceSuggestionModel {
   final String name;
   final String company;
   final String logo;
   final String site;
 
-  const SuggestionModel({
+  const InsuranceSuggestionModel({
     required this.name,
     required this.company,
     required this.logo,
     required this.site,
   });
 
-  SuggestionModel copyWith({
+  InsuranceSuggestionModel copyWith({
     String? name,
     String? company,
     String? logo,
     String? site,
   }) {
-    return SuggestionModel(
+    return InsuranceSuggestionModel(
       name: name ?? this.name,
       company: company ?? this.company,
       logo: logo ?? this.logo,
@@ -36,8 +36,8 @@ class SuggestionModel {
     };
   }
 
-  factory SuggestionModel.fromMap(Map<String, dynamic> map) {
-    return SuggestionModel(
+  factory InsuranceSuggestionModel.fromMap(Map<String, dynamic> map) {
+    return InsuranceSuggestionModel(
       name: map['name'] ?? '',
       company: map['company'] ?? '',
       logo: map['logo'] ?? '',
@@ -47,8 +47,8 @@ class SuggestionModel {
 
   String toJson() => json.encode(toMap());
 
-  factory SuggestionModel.fromJson(String source) =>
-      SuggestionModel.fromMap(json.decode(source));
+  factory InsuranceSuggestionModel.fromJson(String source) =>
+      InsuranceSuggestionModel.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -59,7 +59,7 @@ class SuggestionModel {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is SuggestionModel &&
+    return other is InsuranceSuggestionModel &&
         other.name == name &&
         other.company == company &&
         other.logo == logo &&
