@@ -43,9 +43,14 @@ extension TotalAmountOnExpenses on Iterable<Expense> {
           return previousValue + element.currency;
         }
       });
-  double get fullTotal => totalIncome - totalExpense;
+  double get fullTotal => totalIncome - totalExpense - totalInvestment;
   double get totalExpense =>
       where((element) => element.type == TransactionType.expense)
+          .map((e) => e.currency)
+          .fold<double>(0, (previousValue, element) => previousValue + element);
+
+  double get totalInvestment =>
+      where((element) => element.type == TransactionType.investment)
           .map((e) => e.currency)
           .fold<double>(0, (previousValue, element) => previousValue + element);
 
@@ -57,11 +62,13 @@ extension TotalAmountOnExpenses on Iterable<Expense> {
   double get total => map((e) => e.currency)
       .fold<double>(0, (previousValue, element) => previousValue + element);
 
-  double get thisMonthExpense =>
-      where((element) => element.type == TransactionType.expense)
-          .where((element) => element.time.month == DateTime.now().month)
-          .map((e) => e.currency)
-          .fold<double>(0, (previousValue, element) => previousValue + element);
+  double get thisMonthExpense => where((element) => {
+            TransactionType.expense,
+            TransactionType.investment
+          }.contains(element.type))
+      .where((element) => element.time.month == DateTime.now().month)
+      .map((e) => e.currency)
+      .fold<double>(0, (previousValue, element) => previousValue + element);
 
   double get thisMonthIncome =>
       where((element) => element.type == TransactionType.income)

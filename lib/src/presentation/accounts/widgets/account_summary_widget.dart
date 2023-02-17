@@ -121,6 +121,56 @@ class AccountSummaryWidget extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: PaisaFilledCard(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Investment",
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSecondaryContainer
+                            .withOpacity(0.75),
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      expenses.totalInvestment.toCurrency(decimalDigits: 0),
+                      style: GoogleFonts.manrope(
+                        textStyle: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 40,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Sparkline(
+                          data: expenses.expenseList
+                              .map((e) => e.currency)
+                              .toList(),
+                          useCubicSmoothing: true,
+                          cubicSmoothingFactor: 0.2,
+                          lineWidth: 3,
+                          lineColor: Theme.of(context)
+                                  .extension<CustomColors>()!
+                                  .blue ??
+                              Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

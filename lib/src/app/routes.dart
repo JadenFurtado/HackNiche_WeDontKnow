@@ -163,7 +163,7 @@ final GoRouter goRouter = GoRouter(
     GoRoute(
       name: 'user-name',
       path: userNamePath,
-      builder: (context, state) => UserNamePage(),
+      builder: (context, state) => const UserNamePage(),
     ),
     GoRoute(
       name: 'user-image',

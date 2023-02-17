@@ -11,18 +11,36 @@ enum TransactionType {
   @HiveField(1)
   expense('expense'),
   @HiveField(0)
-  income('income');
+  income('income'),
+  @HiveField(2)
+  investment('investment');
   /*  @HiveField(2)
   transfer */
 
   final String type;
   const TransactionType(this.type);
 
-  String get sign => this == TransactionType.expense ? '-' : '+';
+  String get sign {
+    switch (this) {
+      case TransactionType.expense:
+        return '-';
+      case TransactionType.income:
+        return '+';
+      case TransactionType.investment:
+        return '△';
+    }
+  }
 
-  Color? color(BuildContext context) => this == TransactionType.expense
-      ? Theme.of(context).extension<CustomColors>()!.red
-      : Theme.of(context).extension<CustomColors>()!.green;
+  Color? color(BuildContext context) {
+    switch (this) {
+      case TransactionType.expense:
+        return Theme.of(context).extension<CustomColors>()!.red;
+      case TransactionType.income:
+        return Theme.of(context).extension<CustomColors>()!.green;
+      case TransactionType.investment:
+        return Theme.of(context).extension<CustomColors>()!.blue;
+    }
+  }
 
   String name(BuildContext context) {
     switch (this) {
@@ -30,6 +48,8 @@ enum TransactionType {
         return context.loc.incomeLabel;
       case TransactionType.expense:
         return context.loc.expenseLabel;
+      case TransactionType.investment:
+        return "Investment";
       /* case TransactionType.transfer:
        return context.loc.transferLabel; */
     }
@@ -41,6 +61,8 @@ enum TransactionType {
         return context.loc.incomeNameLabel;
       case TransactionType.expense:
         return context.loc.expenseNameLabel;
+      case TransactionType.investment:
+        return "Investment Name";
       /*  case TransactionType.transfer:
        return context.loc.transferNameLabel; */
     }
