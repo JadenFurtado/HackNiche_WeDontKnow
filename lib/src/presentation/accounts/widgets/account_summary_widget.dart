@@ -153,7 +153,7 @@ class AccountSummaryWidget extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Sparkline(
-                          data: expenses.expenseList
+                          data: expenses.investmentList
                               .map((e) => e.currency)
                               .toList(),
                           useCubicSmoothing: true,

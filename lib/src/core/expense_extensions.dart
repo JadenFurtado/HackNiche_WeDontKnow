@@ -25,6 +25,9 @@ extension TotalAmountOnExpenses on Iterable<Expense> {
   List<Expense> get expenses =>
       toList()..sort(((a, b) => b.time.compareTo(a.time)));
 
+  List<Expense> get investmentList =>
+      where((element) => element.type == TransactionType.investment).toList();
+
   List<Expense> get expenseList =>
       where((element) => element.type == TransactionType.expense).toList();
 
