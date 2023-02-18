@@ -516,11 +516,11 @@
     "@expenseByCategoryLabel": {
         "description": "Expense by category label"
     },
-    "backupAndRestoreLabel": "Backup and Restore",
+    "backupAndRestoreLabel": "Export expenses",
     "@backupAndRestoreLabel": {
         "description": "Backup and Restore label"
     },
-    "backupAndRestoreDescLabel": "Backup and restore your expense, accounts & categories",
+    "backupAndRestoreDescLabel": "Export your expense to CSV",
     "@backupAndRestoreDescLabel": {
         "description": "Backup and restore your data label"
     },

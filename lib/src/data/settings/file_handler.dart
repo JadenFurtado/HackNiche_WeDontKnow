@@ -1,6 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
 
+import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -24,19 +24,70 @@ class FileHandler {
 
     final accountDataStore =
         await locator.getAsync<LocalAccountManagerDataSource>();
-    final Iterable<Account> accounts = await accountDataStore.exportData();
 
     final categoryDataStore =
         await locator.getAsync<LocalCategoryManagerDataSource>();
-    final Iterable<Category> categories = await categoryDataStore.exportData();
 
-    final data = {
-      'expenses': expenses.map((e) => e.toJson()).toList(),
-      'accounts': accounts.map((e) => e.toJson()).toList(),
-      'categories': categories.map((e) => e.toJson()).toList(),
-    };
-    return json.encode(data);
+    return const ListToCsvConverter().convert(
+      csvDataList(
+        expenses.toList(),
+        accountDataStore,
+        categoryDataStore,
+      ),
+    );
   }
+
+  List<List<String>> csvDataList(
+    List<Expense> expenses,
+    LocalAccountManagerDataSource accountDataSource,
+    LocalCategoryManagerDataSource categoryDataSource,
+  ) =>
+      [
+        [
+          'No',
+          'Transaction',
+          'Amount',
+          'Date',
+          'Category Name',
+          'Category Description',
+          'Account Name',
+          'Bank Name',
+          'Account Type',
+        ],
+        ...List.generate(
+          expenses.length,
+          (index) {
+            final expense = expenses[index];
+            final account = accountDataSource.fetchAccount(expense.accountId);
+            final category =
+                categoryDataSource.fetchCategory(expense.categoryId);
+            return expenseRow(
+              index,
+              expense: expense,
+              account: account,
+              category: category,
+            );
+          },
+        ),
+      ];
+
+  List<String> expenseRow(
+    int index, {
+    required Expense expense,
+    required Account account,
+    required Category category,
+  }) =>
+      [
+        '$index',
+        expense.name,
+        '${expense.currency}',
+        expense.time.toIso8601String(),
+        category.name,
+        category.description ?? '',
+        account.name,
+        account.bankName,
+        account.cardType!.name,
+      ];
 
   Future<void> createBackUpFile(Function(String) callback) async {
     final result = await _checkPermission();

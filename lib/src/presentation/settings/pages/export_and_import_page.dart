@@ -67,10 +67,10 @@ class ExportAndImportPage extends StatelessWidget {
 
     final directory = await getTemporaryDirectory();
     final File jsonFile = File(
-        '${directory.path}/paisa_manager_${DateTime.now().toIso8601String()}.csv');
+        '${directory.path}/oofinance_${DateTime.now().toIso8601String()}.csv');
     await jsonFile.writeAsBytes(jsonString.codeUnits);
 
-    Share.shareFiles([jsonFile.path], subject: 'Paisa expensive manager file');
+    Share.shareFiles([jsonFile.path], subject: 'Export Data');
   }
 
   @override
@@ -82,49 +82,7 @@ class ExportAndImportPage extends StatelessWidget {
       body: ListView(
         children: [
           SettingsGroup(
-            title: 'Backup as JSON file',
-            options: [
-              /* const ListTile(
-                title: Text(
-                  'Restore will clear all the existing data and replace with imported data',
-                ),
-              ), */
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          foregroundColor:
-                              Theme.of(context).colorScheme.onPrimary,
-                        ),
-                        onPressed: () => _fetchAndShareJSONData(),
-                        label: Text(context.loc.createLabel),
-                        icon: const Icon(MdiIcons.fileExport),
-                      ),
-                    ),
-                    /*  const SizedBox(width: 12),
-                    Expanded(
-                      child: ElevatedButton.icon(
-                        onPressed: () async {
-                          final FileHandler fileHandler =
-                              await locator.getAsync<FileHandler>();
-                          fileHandler.restoreBackUpFile();
-                        },
-                        label: Text( context.loc.restoreLabel),
-                        icon: const Icon(MdiIcons.fileImport),
-                      ),
-                    ), */
-                  ],
-                ),
-              ),
-            ],
-          ),
-          SettingsGroup(
-            title: 'Backup as CSV file',
+            title: 'Export as CSV file',
             options: [
               /*  const ListTile(
                 title: Text(
@@ -193,56 +151,4 @@ class ExportAndImportPage extends StatelessWidget {
       ),
     );
   }
-
-  List<List<String>> csvDataList(
-    List<Expense> expenses,
-    LocalAccountManagerDataSource accountDataSource,
-    LocalCategoryManagerDataSource categoryDataSource,
-  ) =>
-      [
-        [
-          'No',
-          'Transaction',
-          'Amount',
-          'Date',
-          'Category Name',
-          'Category Description',
-          'Account Name',
-          'Bank Name',
-          'Account Type',
-        ],
-        ...List.generate(
-          expenses.length,
-          (index) {
-            final expense = expenses[index];
-            final account = accountDataSource.fetchAccount(expense.accountId);
-            final category =
-                categoryDataSource.fetchCategory(expense.categoryId);
-            return expenseRow(
-              index,
-              expense: expense,
-              account: account,
-              category: category,
-            );
-          },
-        ),
-      ];
-
-  List<String> expenseRow(
-    int index, {
-    required Expense expense,
-    required Account account,
-    required Category category,
-  }) =>
-      [
-        '$index',
-        expense.name,
-        '${expense.currency}',
-        expense.time.toIso8601String(),
-        category.name,
-        category.description ?? '',
-        account.name,
-        account.bankName,
-        account.cardType!.name,
-      ];
 }
