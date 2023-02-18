@@ -7,11 +7,14 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:paisa/src/core/common.dart';
 import 'package:paisa/src/core/enum/box_types.dart';
+import 'package:paisa/src/data/suggestion/models/investment_collection_model.dart';
+import 'package:paisa/src/presentation/investment_list/pages/investment_list_page.dart';
 import 'package:paisa/src/service_locator.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../data/suggestion/models/insurance_suggestion_model.dart';
+import '../../../data/suggestion/models/investment_product_model.dart';
 
 const PIE_RADIUS = 140.0;
 
@@ -48,7 +51,7 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
     return str.map((e) => InsuranceSuggestionModel.fromMap(e)).toList();
   }
 
-  Future<Map<String, dynamic>> _getBudgetingSuggestions() async {
+  Future<InvestmentCollectionModel> _getInvestmentSuggestions() async {
     final settingsBox =
         locator.get<Box<dynamic>>(instanceName: BoxType.settings.name);
 
@@ -59,19 +62,19 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
       "$baseURL/diversifySuggestions?age=$age&sex=$sex&income=$income",
     ));
 
-    return jsonDecode(res.body) as Map<String, dynamic>;
+    return InvestmentCollectionModel.fromJson(res.body);
   }
 
   late final Future<List<InsuranceSuggestionModel>> _lifeSuggestions,
       _healthSuggestions;
-  late final Future<Map<String, dynamic>> _budgetingSuggestions;
+  late final Future<InvestmentCollectionModel> _investmentSuggestions;
 
   @override
   void initState() {
     super.initState();
     _lifeSuggestions = _getSuggestions("assets/data/life_ins.json");
     _healthSuggestions = _getSuggestions("assets/data/health_ins.json");
-    _budgetingSuggestions = _getBudgetingSuggestions();
+    _investmentSuggestions = _getInvestmentSuggestions();
   }
 
   @override
@@ -200,10 +203,12 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
       return v < 130 + bias ? true : false;
     }
 
-    return FutureBuilder<Map<String, dynamic>>(
-      future: _budgetingSuggestions,
+    return FutureBuilder<InvestmentCollectionModel>(
+      future: _investmentSuggestions,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          final pieChartData = snapshot.data!.pieChart;
+          final productData = snapshot.data!.products;
           return Column(
             children: [
               AspectRatio(
@@ -213,10 +218,10 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
                     borderData: FlBorderData(show: false),
                     sectionsSpace: 0,
                     centerSpaceRadius: 0,
-                    sections: snapshot.data!.entries.map(
+                    sections: pieChartData.entries.map(
                       (e) {
                         final color = pieChartColors[
-                            snapshot.data!.keys.toList().indexOf(e.key)];
+                            pieChartData.keys.toList().indexOf(e.key)];
                         return PieChartSectionData(
                           color: color,
                           value: e.value,
@@ -242,10 +247,10 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
                     .copyWith(bottom: 25),
                 child: Wrap(
                   alignment: WrapAlignment.center,
-                  children: snapshot.data!.entries.map(
+                  children: pieChartData.entries.map(
                     (e) {
                       final color = pieChartColors[
-                          snapshot.data!.keys.toList().indexOf(e.key)];
+                          pieChartData.keys.toList().indexOf(e.key)];
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
@@ -270,12 +275,32 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
                     },
                   ).toList(),
                 ),
-              )
+              ),
+              _investmentTile("Equity Market", productData.equityMarket),
+              _investmentTile("FD", productData.fd),
+              _investmentTile("Mutual Funds", productData.mutualFunds),
+              _investmentTile("Gov Bonds", productData.govBonds),
             ],
           );
         }
-        return const Center(child: CircularProgressIndicator());
+        return const SizedBox(
+          height: 500,
+          child: Center(child: CircularProgressIndicator()),
+        );
       },
+    );
+  }
+
+  Widget _investmentTile(String title, List<InvestmentProductModel> products) {
+    return ListTile(
+      title: Text(title),
+      trailing: const Icon(Icons.chevron_right_rounded),
+      onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                InvestmentListPage(title: title, products: products),
+          )),
     );
   }
 }
