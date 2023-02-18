@@ -1,0 +1,155 @@
+{
+    "gov_bonds": [
+        {
+            "product_id": "1",
+            "product_name": "Government Bond",
+            "product_metadata": {
+                "credit_rating": "AAA",
+                "cost": 1000,
+                "quantity": 100
+            }
+        },
+        {
+            "product_id": "2",
+            "product_name": "Government Bond 2",
+            "product_metadata": {
+                "credit_rating": "AAA",
+                "cost": 1000,
+                "quantity": 100
+            }
+        },
+        {
+            "product_id": "3",
+            "product_name": "Government Bond 3",
+            "product_metadata": {
+                "credit_rating": "AAA",
+                "cost": 1000,
+                "quantity": 100
+            }
+        },
+        {
+            "product_id": "4",
+            "product_name": "Government Bond 4",
+            "product_metadata": {
+                "credit_rating": "AA",
+                "cost": 1000,
+                "quantity": 105
+            }
+        }
+    ],
+    "mutual_funds": [
+        {
+            "product_id": "5",
+            "product_name": "Mutual Funds",
+            "product_metadata": {
+                "credit_rating": "AAA",
+                "cost": 1000,
+                "quantity": 100,
+                "Bank name": "ICICI"
+            }
+        },
+        {
+            "product_id": "6",
+            "product_name": "Mutual Funds 2",
+            "product_metadata": {
+                "credit_rating": "AAA",
+                "cost": 1000,
+                "quantity": 100,
+                "Bank name": "BOB"
+            }
+        },
+        {
+            "product_id": "7",
+            "product_name": "Mutual Funds 3",
+            "product_metadata": {
+                "credit_rating": "AAA",
+                "cost": 1000,
+                "quantity": 100,
+                "Bank name": "HDFC"
+            }
+        },
+        {
+            "product_id": "8",
+            "product_name": "Mutual Funds 4",
+            "product_metadata": {
+                "credit_rating": "AA",
+                "cost": 1000,
+                "quantity": 105,
+                "Bank name": "BOI"
+            }
+        }
+    ],
+    "equity_market": [
+        {
+            "product_id": "9",
+            "product_name": "Equity Share",
+            "product_metadata": {
+                "credit_rating": "AAA",
+                "cost": 1000,
+                "quantity": 100,
+                "Bank name": "ICICI"
+            }
+        },
+        {
+            "product_id": "10",
+            "product_name": "Equity Share 2",
+            "product_metadata": {
+                "credit_rating": "AAA",
+                "cost": 1000,
+                "quantity": 100,
+                "Bank name": "BOB"
+            }
+        },
+        {
+            "product_id": "11",
+            "product_name": "Equity Share 3",
+            "product_metadata": {
+                "credit_rating": "AAA",
+                "cost": 1000,
+                "quantity": 100,
+                "Bank name": "HDFC"
+            }
+        },
+        {
+            "product_id": "12",
+            "product_name": "Equity Share 4",
+            "product_metadata": {
+                "credit_rating": "AA",
+                "cost": 1000,
+                "quantity": 105,
+                "Bank name": "BOI"
+            }
+        }
+    ],
+    "fd": [
+        {
+            "product_id": "13",
+            "product_name": "FD 1",
+            "product_metadata": {
+                "vestation period in years": 4,
+                "credit_rating": "AAA",
+                "min value": 10000
+            }
+        },
+        {
+            "product_id": "14",
+            "product_name": "FD 2",
+            "product_metadata": {
+                "vestation period in years": 2,
+                "credit_rating": "AA",
+                "min value": 1000
+            }
+        },
+        {
+            "product_id": "15",
+            "product_name": "FD 3",
+            "product_metadata": {
+                "vestation period in years": 3,
+                "credit_rating": "AA",
+                "min value": 1000
+            }
+        }
+    ],
+    "ppf": [],
+    "Gold": []
+}
