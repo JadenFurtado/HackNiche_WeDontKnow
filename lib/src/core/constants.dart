@@ -4,7 +4,7 @@ const playStoreUrl =
 const telegramGroupUrl = 'https://t.me/app_paisa';
 const termsAndConditionsUrl = 'https://hemanths.dev/privacy';
 
-const baseURL = "https://jaden.loca.lt";
+const baseURL = "https://oofinance.darshanrander.com";
 
 const String themeModeKey = 'key_theme_mode';
 const String appColorKey = 'key_app_color';
