@@ -20,6 +20,9 @@ app = Flask(__name__)
 
 # income class
 
+@app.route('/')
+def status(method=['GET']):
+    return "Success"
 
 @app.route('/incomeClass')
 def incomeClass(methods=['GET']):

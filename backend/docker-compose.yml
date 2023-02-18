@@ -1,0 +1,11 @@
+services:
+  app:
+    build: .
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/usr/app
+    entrypoint:
+      - python3
+      - /usr/app/serve.py
+
