@@ -16,6 +16,8 @@ As stated before,we decided to focus on the 50 30 20 investing rule during the 2
 ## Expected return on investment:
 The 1st step we decided on was understanding how we gain a returns on investments. This lead us to the equation for the expected return on investments, as shown below
 
+![image](https://user-images.githubusercontent.com/52862591/219943292-1fc9467e-175c-411b-a86e-0df2ed50e048.png)
+
 Where Wi is the weight of the ith asset and Ei is the expected returns. However, we need to ensure good financial planing. This can only be ensured by saving adequately and consistently. We address this in the next section
 
 ### FU Money!
